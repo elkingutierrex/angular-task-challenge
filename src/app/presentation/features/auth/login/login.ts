@@ -46,7 +46,7 @@ export class LoginComponent {
         this.isLoading = false;
         if (user) {
           this.authService.setCurrentUser(user);
-          this.router.navigate(['/tasks']);
+          this.router.navigate(['tasks']);
         } else {
           this.openConfirmDialog(email);
         }

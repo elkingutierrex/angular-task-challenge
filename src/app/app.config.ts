@@ -1,4 +1,4 @@
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import { ApplicationConfig, provideZoneChangeDetection, APP_INITIALIZER } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
@@ -6,16 +6,19 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { environment } from '../environments/environment';
 import { TaskRepository } from './core/repositories/task.repository';
 import { MockTaskRepository } from './data/infrastructure/mock-task.repository';
+import { FirebaseTaskRepository } from './data/infrastructure/firebase-task.repository';
 import { AuthRepository } from './core/repositories/auth.repository';
 import { MockAuthRepository } from './data/infrastructure/mock-auth.repository';
+import { FirebaseAuthRepository } from './data/infrastructure/firebase-auth.repository';
+import { initializeApp } from 'firebase/app';
 
 const taskRepoProvider = environment.useMock
   ? { provide: TaskRepository, useClass: MockTaskRepository }
-  : { provide: TaskRepository, useClass: MockTaskRepository }; // Fallback until API implementation
+  : { provide: TaskRepository, useClass: FirebaseTaskRepository };
 
 const authRepoProvider = environment.useMock
   ? { provide: AuthRepository, useClass: MockAuthRepository }
-  : { provide: AuthRepository, useClass: MockAuthRepository };
+  : { provide: AuthRepository, useClass: FirebaseAuthRepository };
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -23,6 +26,15 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideAnimationsAsync(),
     taskRepoProvider,
-    authRepoProvider
+    authRepoProvider,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: () => () => {
+        const app = initializeApp(environment.firebase);
+        // Initialize Analytics if needed, or other Firebase features
+        // const analytics = getAnalytics(app);
+      },
+      multi: true
+    }
   ]
 };
