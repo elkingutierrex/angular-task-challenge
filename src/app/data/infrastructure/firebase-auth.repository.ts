@@ -3,7 +3,7 @@ import { Observable, from, of, throwError } from 'rxjs';
 import { map, switchMap, catchError } from 'rxjs/operators';
 import { AuthRepository } from '../../core/repositories/auth.repository';
 import { User } from '../../core/models/user.model';
-import { initializeApp } from 'firebase/app';
+import { initializeApp, getApps, getApp } from 'firebase/app';
 import { getFirestore, collection, query, where, getDocs, addDoc, doc, setDoc } from 'firebase/firestore';
 import { environment } from '../../../environments/environment';
 
@@ -11,7 +11,7 @@ import { environment } from '../../../environments/environment';
     providedIn: 'root'
 })
 export class FirebaseAuthRepository extends AuthRepository {
-    private db = getFirestore(initializeApp(environment.firebase));
+    private db = getApps().length > 0 ? getFirestore(getApp()) : getFirestore(initializeApp(environment.firebase));
     private currentUser: User | null = null;
     private readonly collectionName = 'users';
 

@@ -4,23 +4,23 @@ import { Router } from '@angular/router';
 import { AuthService } from './core/services/auth.service';
 
 const authGuard = () => {
-    const authService = inject(AuthService);
-    const router = inject(Router);
-    if (authService.isLoggedIn()) {
-        return true;
-    }
-    return router.parseUrl('/login');
+  const authService = inject(AuthService);
+  const router = inject(Router);
+  if (authService.isLoggedIn()) {
+    return true;
+  }
+  return router.parseUrl('/login');
 };
 
 export const routes: Routes = [
-    { path: '', redirectTo: 'login', pathMatch: 'full' },
-    {
-        path: 'login',
-        loadComponent: () => import('./presentation/features/auth/login/login').then(m => m.LoginComponent)
-    },
-    {
-        path: 'tasks',
-        loadComponent: () => import('./presentation/features/tasks/task-list/task-list').then(m => m.TaskListComponent),
-        canActivate: [authGuard]
-    }
+  {
+    path: 'login',
+    loadComponent: () => import('./presentation/features/auth/login/login').then(m => m.LoginComponent)
+  },
+  {
+    path: 'tasks',
+    loadComponent: () => import('./presentation/features/tasks/task-list/task-list').then(m => m.TaskListComponent),
+    // canActivate: [authGuard]
+  },
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
 ];

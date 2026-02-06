@@ -1,4 +1,4 @@
-import { ApplicationConfig, provideZoneChangeDetection, APP_INITIALIZER } from '@angular/core';
+import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
@@ -26,15 +26,6 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideAnimationsAsync(),
     taskRepoProvider,
-    authRepoProvider,
-    {
-      provide: APP_INITIALIZER,
-      useFactory: () => () => {
-        const app = initializeApp(environment.firebase);
-        // Initialize Analytics if needed, or other Firebase features
-        // const analytics = getAnalytics(app);
-      },
-      multi: true
-    }
+    authRepoProvider
   ]
 };
