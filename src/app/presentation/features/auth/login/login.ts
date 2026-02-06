@@ -70,7 +70,7 @@ export class LoginComponent {
         this.authService.createUser(email).subscribe({
           next: () => {
             this.isLoading = false;
-            this.router.navigate(['/tasks']);
+            this.router.navigate(['tasks']);
           },
           error: () => this.isLoading = false
         });
