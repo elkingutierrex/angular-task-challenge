@@ -1,53 +1,48 @@
+// task-list.scss
+
 .page-container {
     min-height: 100vh;
-    background-color: #f5f7fa;
-}
-
-mat-toolbar {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
     display: flex;
-    justify-content: space-between;
-    background: white;
-    color: #333;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    position: sticky;
-    top: 0;
-    z-index: 100;
-
-    .spacer {
-        flex: 1 1 auto;
-    }
-
-    .user-email {
-        font-size: 0.9rem;
-        margin-right: 1rem;
-        color: #666;
-    }
+    flex-direction: column;
 }
 
 .content {
-    max-width: 800px;
-    margin: 2rem auto;
-    padding: 0 1rem;
+    flex: 1;
+    padding: 2rem;
     display: flex;
-    flex-direction: column;
-    gap: 2rem;
+    justify-content: center;
+
+    .task-manager-container {
+        width: 100%;
+        max-width: 800px;
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+    }
+}
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+    border-radius: 16px;
+    padding: 1rem;
 }
 
 .add-task-card {
-    border-radius: 12px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
-
-    mat-card-header {
-        margin-bottom: 1rem;
-
-        mat-card-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-        }
+    mat-card-title {
+        color: #3f51b5;
+        font-weight: 600;
     }
 
-    .full-width {
-        width: 100%;
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        margin-top: 1rem;
     }
 
     .form-actions {
@@ -56,16 +51,52 @@ mat-toolbar {
     }
 }
 
+.custom-field {
+    ::ng-deep .mat-mdc-text-field-wrapper {
+        background-color: rgba(255, 255, 255, 0.5);
+    }
+}
+
+.task-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
 .empty-state {
     text-align: center;
     padding: 3rem;
     color: #888;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
 
-    mat-icon {
-        font-size: 4rem;
-        height: 4rem;
-        width: 4rem;
-        margin-bottom: 1rem;
-        opacity: 0.3;
+    h3 {
+        margin: 0;
+        color: #555;
+    }
+}
+
+.task-item-wrapper {
+    animation: slideIn 0.3s ease-out forwards;
+    opacity: 0;
+
+    @for $i from 1 through 10 {
+        &:nth-child(#{$i}) {
+            animation-delay: #{$i * 0.1}s;
+        }
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }

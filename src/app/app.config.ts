@@ -11,6 +11,7 @@ import { AuthRepository } from './core/repositories/auth.repository';
 import { MockAuthRepository } from './data/infrastructure/mock-auth.repository';
 import { FirebaseAuthRepository } from './data/infrastructure/firebase-auth.repository';
 import { initializeApp } from 'firebase/app';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 const taskRepoProvider = environment.useMock
   ? { provide: TaskRepository, useClass: MockTaskRepository }
@@ -26,6 +27,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideAnimationsAsync(),
     taskRepoProvider,
-    authRepoProvider
+    authRepoProvider,
+    NgxSpinnerModule
   ]
 };

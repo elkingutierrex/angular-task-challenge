@@ -5,38 +5,40 @@ import { User } from '../models/user.model';
 import { Observable, tap } from 'rxjs';
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root'
 })
 export class AuthService {
-    private authRepository = inject(AuthRepository);
-    private router = inject(Router);
+  private authRepository = inject(AuthRepository);
+  private router = inject(Router);
 
-    currentUser = signal<User | null>(this.authRepository.getCurrentUser());
+  currentUser = signal<User | null>(this.authRepository.getCurrentUser());
 
-    constructor() { }
+  constructor() { }
 
-    findUser(email: string): Observable<User | null> {
-        return this.authRepository.findUser(email);
-    }
+  findUser(email: string): Observable<User | null> {
+    console.log('findUser', email);
 
-    createUser(email: string): Observable<User> {
-        return this.authRepository.createUser(email).pipe(
-            tap(user => this.setCurrentUser(user))
-        );
-    }
+    return this.authRepository.findUser(email);
+  }
 
-    setCurrentUser(user: User): void {
-        this.authRepository.setCurrentUser(user);
-        this.currentUser.set(user);
-    }
+  createUser(email: string): Observable<User> {
+    return this.authRepository.createUser(email).pipe(
+      tap(user => this.setCurrentUser(user))
+    );
+  }
 
-    logout(): void {
-        this.authRepository.logout();
-        this.currentUser.set(null);
-        this.router.navigate(['/login']);
-    }
+  setCurrentUser(user: User): void {
+    this.authRepository.setCurrentUser(user);
+    this.currentUser.set(user);
+  }
 
-    isLoggedIn(): boolean {
-        return !!this.currentUser();
-    }
+  logout(): void {
+    this.authRepository.logout();
+    this.currentUser.set(null);
+    this.router.navigate(['/login']);
+  }
+
+  isLoggedIn(): boolean {
+    return !!this.currentUser();
+  }
 }

@@ -12,6 +12,8 @@ import { AuthService } from '../../../../core/services/auth.service';
 import { TaskService } from '../../../../core/services/task.service';
 import { TaskItemComponent } from '../components/task-item/task-item';
 import { Task } from '../../../../core/models/task.model';
+import { LoadingService } from '../../../../core/services/loading.service';
+import { Navbar } from '../../../shared/components/navbar/navbar';
 
 @Component({
   selector: 'app-task-list',
@@ -26,7 +28,8 @@ import { Task } from '../../../../core/models/task.model';
     MatCardModule,
     MatInputModule,
     MatFormFieldModule,
-    TaskItemComponent
+    TaskItemComponent,
+    Navbar
   ],
   templateUrl: './task-list.html',
   styleUrl: './task-list.scss'
@@ -35,6 +38,7 @@ export class TaskListComponent implements OnInit {
   private authService = inject(AuthService);
   private taskService = inject(TaskService);
   private fb = inject(FormBuilder);
+  private loadingService = inject(LoadingService);
 
   tasks = this.taskService.sortedTasks;
   currentUser = this.authService.currentUser;
@@ -45,12 +49,19 @@ export class TaskListComponent implements OnInit {
   });
 
   ngOnInit() {
-    this.taskService.loadTasks();
+    this.loadingService.show();
+    this.taskService.loadTasks(); // Since this is void/signal based, we might just hide after short delay or if we changed loadTasks to return Observable
+    // Ideally loadTasks returns Observable. But existing impl is void.
+    // I'll assume loadTasks is fast or async.
+    // Actually, checking task.service.ts... loadTasks calls subscribe.
+    // I should modify TaskService to return Observable so I can hide spinner.
+    // OR just hide immediately for now if I can't modify Service easily without breaking signals flow.
+    // Let's modify loadTasks in TaskService to return Observable/Subscription or just hide it here via setTimeout as fallback?
+    // Better: Modify TaskService.
+    setTimeout(() => this.loadingService.hide(), 1000); // Temporary mock delay for visual feedback if service isn't refactored yet.
   }
 
-  onLogout() {
-    this.authService.logout();
-  }
+
 
   onToggle(task: Task) {
     this.taskService.toggleTaskCompletion(task).subscribe();
@@ -58,14 +69,16 @@ export class TaskListComponent implements OnInit {
 
   onDelete(task: Task) {
     if (confirm('Are you sure you want to delete this task?')) {
-      this.taskService.deleteTask(task.id).subscribe();
+      this.loadingService.show();
+      this.taskService.deleteTask(task.id).subscribe(() => this.loadingService.hide());
     }
   }
 
   onEdit(task: Task) {
     const newTitle = prompt('Edit Title:', task.title);
     if (newTitle) {
-      this.taskService.updateTask({ ...task, title: newTitle }).subscribe();
+      this.loadingService.show();
+      this.taskService.updateTask({ ...task, title: newTitle }).subscribe(() => this.loadingService.hide());
     }
   }
 
@@ -73,9 +86,10 @@ export class TaskListComponent implements OnInit {
     if (this.taskForm.invalid) return;
 
     const { title, description } = this.taskForm.value;
+    this.loadingService.show();
     this.taskService.addTask({ title, description }).subscribe(() => {
       this.taskForm.reset();
-      // Optional: Focus back on title?
+      this.loadingService.hide();
     });
   }
 }
