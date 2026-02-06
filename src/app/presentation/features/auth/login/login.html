@@ -6,7 +6,7 @@
   </mat-card-header>
 
   <mat-card-content>
-    <form (ngSubmit)="onSubmit()" [style.width.%]="100">
+    <form [style.width.%]="100">
       <mat-form-field appearance="outline">
         <mat-label>Email Address</mat-label>
         <input matInput [formControl]="emailControl" placeholder="name@example.com" required />
@@ -22,7 +22,7 @@
         <button
           mat-raised-button
           color="primary"
-          (click)="onSubmit()"
+          (click)="onSubmit($event)"
           [disabled]="emailControl.invalid || isLoading"
         >
           {{ isLoading ? 'Checking...' : 'Sign In' }}

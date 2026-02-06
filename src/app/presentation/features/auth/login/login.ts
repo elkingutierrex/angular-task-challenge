@@ -6,9 +6,10 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
 import { AuthService } from '../../../../core/services/auth.service';
-import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog';
+import Swal from 'sweetalert2';
+
 
 @Component({
   selector: 'app-login',
@@ -28,14 +29,14 @@ import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialo
 export class LoginComponent {
   private authService = inject(AuthService);
   private router = inject(Router);
-  private dialog = inject(MatDialog);
 
   emailControl = new FormControl('', [Validators.required, Validators.email]);
   isLoading = false;
 
-  onSubmit() {
-    console.log('welcome');
 
+
+  onSubmit(event: Event) {
+    event.preventDefault();
     if (this.emailControl.invalid) return;
 
     const email = this.emailControl.value!;
@@ -43,36 +44,59 @@ export class LoginComponent {
 
     this.authService.findUser(email).subscribe({
       next: (user) => {
+        console.log('next');
+
         this.isLoading = false;
         if (user) {
           this.authService.setCurrentUser(user);
-          this.router.navigate(['tasks']);
+
+
+          this.router.navigate(['/tasks']);
         } else {
-          this.openConfirmDialog(email);
+          this.promptCreateUser(email);
         }
       },
       error: (err) => {
+        console.log('error');
         this.isLoading = false;
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'An error occurred while connecting to the server.',
+        });
         console.error(err);
       }
     });
   }
 
-  openConfirmDialog(email: string) {
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      width: '350px',
-      data: { email }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
+  promptCreateUser(email: string) {
+    Swal.fire({
+      title: "Create a new user",
+      text: "This mail doesn't have registrated, do you want to register?",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, register it!"
+    }).then((result) => {
+      if (result.isConfirmed) {
         this.isLoading = true;
         this.authService.createUser(email).subscribe({
-          next: () => {
+          next: (user) => {
             this.isLoading = false;
-            this.router.navigate(['tasks']);
+            this.authService.setCurrentUser(user);
+            Swal.fire({
+              title: "Ok!",
+              text: "Your can create tasks!.",
+              icon: "success"
+            }).then(() => {
+              this.router.navigate(['/tasks']);
+            });
           },
-          error: () => this.isLoading = false
+          error: () => {
+            this.isLoading = false;
+            Swal.fire('Error', 'Could not create user', 'error');
+          }
         });
       }
     });
