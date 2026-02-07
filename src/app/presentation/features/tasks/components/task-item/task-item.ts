@@ -4,12 +4,13 @@ import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { Task } from '../../../../../core/models/task.model';
 
 @Component({
   selector: 'app-task-item',
   standalone: true,
-  imports: [CommonModule, MatCardModule, MatCheckboxModule, MatButtonModule, MatIconModule],
+  imports: [CommonModule, MatCardModule, MatCheckboxModule, MatButtonModule, MatIconModule, MatTooltipModule],
   template: `
     <mat-card class="task-card" [class.completed]="task.isCompleted">
       <div class="task-content">
@@ -20,15 +21,15 @@ import { Task } from '../../../../../core/models/task.model';
         </mat-checkbox>
         <div class="task-info">
           <h3 [class.strike]="task.isCompleted">{{ task.title }}</h3>
-          <p>{{ task.description }}</p>
-          <span class="date">{{ task.createdAt | date:'mediumDate' }}</span>
+          <p *ngIf="task.description">{{ task.description }}</p>
+          <span class="date"><mat-icon inline>schedule</mat-icon>{{ task.createdAt | date:'mediumDate' }}</span>
         </div>
       </div>
       <div class="task-actions">
-        <button mat-icon-button color="primary" (click)="onEdit()">
+        <button mat-icon-button color="primary" (click)="onEdit()" matTooltip="Edit Task">
             <mat-icon>edit</mat-icon>
         </button>
-        <button mat-icon-button color="warn" (click)="onDelete()">
+        <button mat-icon-button color="warn" (click)="onDelete()" matTooltip="Delete Task">
             <mat-icon>delete</mat-icon>
         </button>
       </div>
