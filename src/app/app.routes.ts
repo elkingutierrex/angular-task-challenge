@@ -20,7 +20,7 @@ export const routes: Routes = [
   {
     path: 'tasks',
     loadComponent: () => import('./presentation/features/tasks/task-list/task-list').then(m => m.TaskListComponent),
-    // canActivate: [authGuard]
+    canActivate: [authGuard]
   },
   { path: '', redirectTo: 'login', pathMatch: 'full' },
 ];

@@ -10,6 +10,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { AuthService } from '../../../../core/services/auth.service';
 import { LoadingService } from '../../../../core/services/loading.service';
 import Swal from 'sweetalert2';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 
 @Component({
@@ -22,7 +23,8 @@ import Swal from 'sweetalert2';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatDialogModule
+    MatDialogModule,
+    NgxSpinnerModule
   ],
   templateUrl: './login.html',
   styleUrl: './login.scss'
