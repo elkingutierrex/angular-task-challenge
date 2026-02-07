@@ -9,7 +9,7 @@
 
 .content {
     flex: 1;
-    padding: 2rem;
+    padding: .5rem;
     display: flex;
     justify-content: center;
 
@@ -18,7 +18,7 @@
         max-width: 800px;
         display: flex;
         flex-direction: column;
-        gap: 2rem;
+        gap: .5rem;
     }
 }
 

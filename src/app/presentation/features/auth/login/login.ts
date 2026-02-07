@@ -47,13 +47,9 @@ export class LoginComponent {
 
     this.authService.findUser(email).subscribe({
       next: (user) => {
-        console.log('next');
-
         this.isLoading = false;
         if (user) {
           this.authService.setCurrentUser(user);
-
-
           this.router.navigate(['/tasks']);
         } else {
           this.promptCreateUser(email);
@@ -75,7 +71,7 @@ export class LoginComponent {
   promptCreateUser(email: string) {
     Swal.fire({
       title: "Create a new user",
-      text: "This mail doesn't have registrated, do you want to register?",
+      text: "This mail doesn't have registered, do you want to register it?",
       icon: "question",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -91,7 +87,9 @@ export class LoginComponent {
             Swal.fire({
               title: "Ok!",
               text: "Your can create tasks!.",
-              icon: "success"
+              icon: "success",
+              showConfirmButton: false,
+              timer: 1500
             }).then(() => {
               this.router.navigate(['/tasks']);
             });

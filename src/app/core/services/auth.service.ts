@@ -16,8 +16,6 @@ export class AuthService {
   constructor() { }
 
   findUser(email: string): Observable<User | null> {
-    console.log('findUser', email);
-
     return this.authRepository.findUser(email);
   }
 
