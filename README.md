@@ -1,6 +1,6 @@
 # Angular Task Manager
 
-A modern, responsive Task Management application built with **Angular 17+ - App create with ANGULAR v.21** and **Firebase**. This project demonstrates scalable architecture, state management with Signals, and a premium "Glassmorphism" UI design.
+A modern, responsive Task Management application built with **Angular 17+ => App create with ANGULAR v.21** and **Firebase**. This project demonstrates scalable architecture, state management with Signals, and a premium "Glassmorphism" UI design.
 
 ![Angular](https://img.shields.io/badge/Angular-21%2B-DD0031?style=flat&logo=angular)
 ![Firebase](https://img.shields.io/badge/Firebase-Firestore-FFCA28?style=flat&logo=firebase)
@@ -24,7 +24,7 @@ A modern, responsive Task Management application built with **Angular 17+ - App 
   - **Responsive**: Fully optimized for mobile, tablet, and desktop.
   - **Interactive**: Hover effects, loading spinners (`ngx-spinner`), and SweetAlert2 notifications.
 
-## 🛠️ Technology Stack
+## Technology Stack
 
 - **Frontend Framework**: Angular 17+ (Standalone Components, Signals).
 - **Backend/DB**: Firebase Firestore.
