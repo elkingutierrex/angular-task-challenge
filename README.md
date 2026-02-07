@@ -2,7 +2,7 @@
 
 A modern, responsive Task Management application built with **Angular 17+ - App create with ANGULAR v.21** and **Firebase**. This project demonstrates scalable architecture, state management with Signals, and a premium "Glassmorphism" UI design.
 
-![Angular](https://img.shields.io/badge/Angular-17%2B-DD0031?style=flat&logo=angular)
+![Angular](https://img.shields.io/badge/Angular-21%2B-DD0031?style=flat&logo=angular)
 ![Firebase](https://img.shields.io/badge/Firebase-Firestore-FFCA28?style=flat&logo=firebase)
 ![License](https://img.shields.io/badge/License-MIT-blue.svg)
 
